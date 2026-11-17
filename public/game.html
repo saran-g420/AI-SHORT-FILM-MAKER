@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Battle Arena | CYBERSTRIKE 2026</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/game.css">
+</head>
+<body style="background: #030611;">
+
+  <!-- Minimal In-Game Nav Bar -->
+  <nav class="cyber-nav" style="padding: 0.6rem 2rem;">
+    <a href="index.html" class="nav-brand">
+      <span class="brand-icon">🤖</span>
+      <div>
+        <div class="brand-title" style="font-size: 1.1rem;">CYBERSTRIKE 2026</div>
+        <div class="brand-subtitle">TOURNAMENT ARENA ENGAGEMENT</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <button id="btnAutoFire" class="hud-btn">⚡ Auto-Fire: OFF</button>
+      <button id="btnAudio" class="hud-btn">🔊 Audio: ON</button>
+      <button id="btnPause" class="hud-btn">⏸️ Pause</button>
+      <a href="leaderboard.html" target="_blank" class="nav-btn" style="padding: 0.35rem 0.8rem; font-size: 0.75rem;">
+        Leaderboard ↗
+      </a>
+    </div>
+  </nav>
+
+  <main class="game-viewport">
+    <!-- Top Heads-Up Display (HUD) -->
+    <header class="hud-bar">
+      <!-- Team Info -->
+      <div class="hud-team-info">
+        <div class="hud-team-name" id="hudTeamName">CYBER-PILOT</div>
+        <div class="hud-students" id="hudStudents">Arcade Player (Open Arena)</div>
+      </div>
+
+      <!-- Center Telemetry: Timer, Score, Level, Kills, Accuracy, Lives -->
+      <div class="hud-center-stats">
+        <div class="stat-item">
+          <span class="stat-label">LIVES</span>
+          <span class="stat-value" id="hudLives" style="font-size: 1.1rem; letter-spacing: 2px;">❤️❤️❤️</span>
+        </div>
+
+        <div class="stat-item timer-box" id="timerBox">
+          <span class="stat-label">TIME REMAINING</span>
+          <span class="stat-value" id="hudTimer">05:00</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-label">CURRENT SCORE</span>
+          <span class="stat-value" id="hudScore" style="color: var(--primary-cyan);">0</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-label">COMBAT ZONE</span>
+          <span class="stat-value" id="hudLevel" style="color: var(--accent-yellow);">LEVEL 1</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-label">HOSTILES ELIMINATED</span>
+          <span class="stat-value" id="hudKills">0</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-label">HIT ACCURACY</span>
+          <span class="stat-value" id="hudAccuracy" style="color: var(--accent-green);">100%</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Canvas Viewport Container -->
+    <div id="canvasContainer">
+      <canvas id="gameCanvas" width="960" height="640" tabindex="0" style="cursor: crosshair; outline: none;"></canvas>
+    </div>
+
+    <!-- Bottom Status Bar (HP, Shield, Powerups, Shoot Button) -->
+    <footer class="bottom-status-bar">
+      <div class="meter-group">
+        <!-- Hull Health -->
+        <div class="meter-wrapper">
+          <div class="meter-header">
+            <span style="color: #ff6b8b;">HULL INTEGRITY</span>
+            <span id="hpText" style="color: #ff6b8b; font-family: var(--font-mono);">100/100</span>
+          </div>
+          <div class="meter-container">
+            <div id="hpBar" class="meter-fill meter-hp" style="width: 100%;"></div>
+          </div>
+        </div>
+
+        <!-- Shield Energy -->
+        <div class="meter-wrapper">
+          <div class="meter-header">
+            <span style="color: var(--primary-cyan);">ENERGY SHIELD</span>
+            <span id="shieldText" style="color: var(--primary-cyan); font-family: var(--font-mono);">50/100</span>
+          </div>
+          <div class="meter-container">
+            <div id="shieldBar" class="meter-fill meter-shield" style="width: 50%;"></div>
+          </div>
+        </div>
+
+        <!-- Active Powerup Indicator -->
+        <div id="powerupBadge" class="powerup-pill hidden">
+          <span>⚡</span>
+          <span id="powerupTimer">OVERCHARGE (10s)</span>
+        </div>
+      </div>
+
+      <!-- Controls Guidance / On-Screen Fire Button -->
+      <div class="hud-actions">
+        <div style="font-size: 0.75rem; color: var(--text-dim); text-align: right; line-height: 1.3;">
+          <div>Aim: <span class="key-badge">ARROWS</span> / Mouse</div>
+          <div>Move: <span class="key-badge">W,A,S,D</span> | Fire: <span class="key-badge">SPACE</span> / <span class="key-badge">ENTER</span></div>
+        </div>
+
+        <!-- On-Screen Clickable Shoot Button (Section 5 Requirement) -->
+        <button id="btnShoot" class="btn-screen-shoot" type="button">
+          💥 FIRE WEAPON
+        </button>
+      </div>
+    </footer>
+  </main>
+
+  <!-- MODAL 1: PRE-FLIGHT BRIEFING & CONTROL GUIDE -->
+  <div id="preFlightModal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 class="modal-title">⚡ MISSION PRE-FLIGHT BRIEFING</h3>
+      </div>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">
+        Welcome Operators! Your team's official tournament clock will begin the moment you click <strong>Engage Arena</strong>. Read the controls and level objectives below.
+      </p>
+
+      <div class="preflight-grid">
+        <div class="guide-box">
+          <h4><span>🎯</span> Weapon Aiming & Shooting</h4>
+          <ul class="guide-list">
+            <li><span>Aim Left / Right:</span> <span class="key-badge">←</span> <span class="key-badge">→</span></li>
+            <li><span>Aim Up / Down:</span> <span class="key-badge">↑</span> <span class="key-badge">↓</span></li>
+            <li><span>Diagonal Aim:</span> <span class="key-badge">↑+→</span> etc.</li>
+            <li><span>Primary Fire:</span> <span class="key-badge">SPACE</span></li>
+            <li><span>Alternate Fire:</span> <span class="key-badge">ENTER</span></li>
+            <li><span>Screen Fire:</span> <span class="key-badge">CLICK [FIRE]</span></li>
+          </ul>
+        </div>
+
+        <div class="guide-box">
+          <h4><span>🚀</span> Maneuvering & Crates</h4>
+          <ul class="guide-list">
+            <li><span>Move Chassis:</span> <span class="key-badge">W, A, S, D</span></li>
+            <li><span>Pause Match:</span> <span class="key-badge">P</span> or <span class="key-badge">ESC</span></li>
+            <li><span>Supply Crates:</span> Shoot for drops</li>
+            <li><span>Health Repair:</span> <span style="color:#00ff88;">✚ +40 HP</span></li>
+            <li><span>Plasma Spread:</span> <span style="color:#bc13fe;">⚡ Triple Shot</span></li>
+            <li><span>EMP Bomb:</span> <span style="color:#ffff00;">💥 Wipe Screen</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="background: rgba(0, 247, 255, 0.08); padding: 0.8rem; border-radius: 4px; font-size: 0.8rem; color: #bae6fd; margin-bottom: 1.5rem;">
+        <strong>Mission Progression:</strong> Level 1 (Recon Drones) ➔ Level 2 (Invasion Swarm & Tanks) ➔ Level 3 (Stealth & Laser Turrets) ➔ Level 4 (Titan Boss "Omega-Zero").
+      </div>
+
+      <div class="text-center">
+        <button id="startFlightBtn" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 3rem;">
+          ENGAGE ARENA & START RUN 🚀
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: PAUSE MENU -->
+  <div id="pauseModal" class="modal-overlay hidden">
+    <div class="modal-box text-center" style="max-width: 420px;">
+      <h3 class="modal-title" style="margin-bottom: 1rem;">⏸️ MATCH PAUSED</h3>
+      <p style="color: var(--text-secondary); margin-bottom: 1.8rem; font-size: 0.9rem;">
+        Gameplay and mission timer are suspended.
+      </p>
+      <button id="resumeBtn" class="btn btn-primary" style="width: 100%; margin-bottom: 0.8rem;">
+        Resume Combat ▶
+      </button>
+      <a href="index.html" class="btn btn-secondary" style="width: 100%;">
+        Exit to Hub
+      </a>
+    </div>
+  </div>
+
+  <!-- MODAL 3: FINAL RESULTS & TOURNAMENT SCORING -->
+  <div id="resultsModal" class="modal-overlay hidden">
+    <div class="modal-box" style="max-width: 620px;">
+      <div class="modal-header">
+        <h3 class="modal-title">🏆 MISSION COMPLETE</h3>
+        <span class="badge badge-gold" id="resReason">TIME EXPIRED</span>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 1rem;">
+        <div style="font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase;">TOURNAMENT CANDIDATE</div>
+        <h2 id="resTeamName" style="color: #fff; font-size: 1.6rem; letter-spacing: 2px;">CYBER-KNIGHTS</h2>
+      </div>
+
+      <!-- Final Score Display -->
+      <div class="results-score-display">
+        <div class="score-title">OFFICIAL TOURNAMENT SCORE</div>
+        <div class="score-big" id="resFinalScore">00,000</div>
+        <div style="font-size: 0.8rem; color: var(--accent-green);">
+          Accuracy bonus calculated & verified by tournament engine
+        </div>
+      </div>
+
+      <!-- Telemetry Breakdown -->
+      <div class="results-stats-grid">
+        <div class="res-stat-card">
+          <div class="res-stat-label">CURRENT RANK</div>
+          <div class="res-stat-val" id="resRank" style="color: var(--accent-yellow);">#1</div>
+        </div>
+
+        <div class="res-stat-card">
+          <div class="res-stat-label">LEVELS BEATEN</div>
+          <div class="res-stat-val" id="resLevels">3 / 4</div>
+        </div>
+
+        <div class="res-stat-card">
+          <div class="res-stat-label">KILLS</div>
+          <div class="res-stat-val" id="resEnemies">42</div>
+        </div>
+
+        <div class="res-stat-card">
+          <div class="res-stat-label">ACCURACY</div>
+          <div class="res-stat-val" id="resAccuracy">86.4%</div>
+        </div>
+      </div>
+
+      <div class="flex-between" style="gap: 1rem; flex-wrap: wrap;">
+        <button type="button" id="btnPlayAgain" class="btn btn-primary" style="font-size: 1rem; padding: 0.8rem 1.6rem;">
+          🔄 Play Again
+        </button>
+        <a href="index.html" class="btn btn-secondary">Return to Hub</a>
+        <a href="leaderboard.html" class="btn btn-secondary">View Leaderboard 🏆</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/game-engine.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

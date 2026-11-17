@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Leaderboard | CYBERSTRIKE 2026</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Top 3 Podium Highlights */
+    .podium-container {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      align-items: end;
+    }
+    .podium-card {
+      background: rgba(10, 18, 40, 0.85);
+      backdrop-filter: blur(12px);
+      border-radius: 8px;
+      padding: 1.8rem 1.4rem;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .podium-card.rank-1 {
+      border: 2px solid var(--accent-yellow);
+      box-shadow: 0 0 35px rgba(255, 230, 0, 0.35);
+      padding: 2.4rem 1.4rem;
+      background: linear-gradient(180deg, rgba(255, 230, 0, 0.1) 0%, rgba(10, 18, 40, 0.95) 100%);
+    }
+    .podium-card.rank-2 {
+      border: 2px solid #cbd5e1;
+      box-shadow: 0 0 25px rgba(203, 213, 225, 0.25);
+    }
+    .podium-card.rank-3 {
+      border: 2px solid #d97706;
+      box-shadow: 0 0 25px rgba(217, 119, 6, 0.25);
+    }
+    .podium-badge {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .podium-team {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.2rem;
+      letter-spacing: 1px;
+    }
+    .podium-score {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary-cyan);
+      margin: 0.4rem 0;
+    }
+    .podium-card.rank-1 .podium-score {
+      color: var(--accent-yellow);
+      font-size: 2.3rem;
+    }
+    .podium-students {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+    .podium-stats {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 0.6rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Projector Fullscreen Mode Styles */
+    body.projector-mode {
+      background: #020409 !important;
+      padding: 0;
+    }
+    body.projector-mode .cyber-nav,
+    body.projector-mode .cyber-footer,
+    body.projector-mode .non-projector {
+      display: none !important;
+    }
+    body.projector-mode .container {
+      max-width: 98vw;
+      padding: 1.5rem;
+    }
+    body.projector-mode .cyber-table th,
+    body.projector-mode .cyber-table td {
+      padding: 1.2rem 1.4rem;
+      font-size: 1.25rem;
+    }
+    body.projector-mode .podium-score {
+      font-size: 3rem;
+    }
+    body.projector-mode .podium-team {
+      font-size: 1.8rem;
+    }
+
+    /* Rank Pill Badges */
+    .rank-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-weight: 900;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+    }
+    .rank-pill-1 { background: #ffe600; color: #000; box-shadow: 0 0 12px #ffe600; }
+    .rank-pill-2 { background: #e2e8f0; color: #000; box-shadow: 0 0 10px #e2e8f0; }
+    .rank-pill-3 { background: #f59e0b; color: #000; box-shadow: 0 0 10px #f59e0b; }
+    .rank-pill-other { background: rgba(0, 247, 255, 0.15); color: var(--primary-cyan); border: 1px solid var(--primary-cyan); }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="cyber-nav">
+    <a href="index.html" class="nav-brand">
+      <span class="brand-icon">🤖</span>
+      <div>
+        <div class="brand-title">CYBERSTRIKE 2026</div>
+        <div class="brand-subtitle">SYMPOSIUM LIVE LEADERBOARD</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="register.html" class="nav-link">Team Registration</a>
+      <a href="login.html" class="nav-link">Arena Login</a>
+      <a href="leaderboard.html" class="nav-link active">Leaderboard</a>
+      <button id="projectorToggleBtn" class="nav-btn">📽️ Projector Mode</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <header class="flex-between mb-2" style="margin-bottom: 2rem;">
+      <div>
+        <h1 class="section-title">
+          <span>🏆</span> Live Tournament Leaderboard
+        </h1>
+        <p class="section-subtitle" style="margin-bottom: 0;">
+          Official rankings updated live via WebSockets. Tie-breaker hierarchy: Final Score ➔ Hit Accuracy % ➔ Earliest Timestamp.
+        </p>
+      </div>
+
+      <div class="flex gap-1 non-projector" style="align-items: center;">
+        <span class="badge badge-green" id="liveStatusBadge">● LIVE SYNC ACTIVE</span>
+        <button id="refreshBtn" class="hud-btn" style="padding: 0.5rem 1rem;">🔄 Refresh</button>
+      </div>
+    </header>
+
+    <!-- Hidden Leaderboard Notice -->
+    <div id="hiddenNotice" class="cyber-card text-center hidden" style="padding: 4rem 2rem;">
+      <div style="font-size: 3.5rem; margin-bottom: 1rem;">🔒</div>
+      <h2 style="color: var(--accent-yellow); margin-bottom: 0.8rem; font-size: 1.8rem;">Leaderboard Temporarily Concealed</h2>
+      <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto 1.5rem; font-size: 1.05rem;">
+        The symposium organizers have temporarily masked the public scores before the grand prize announcement! All submitted scores are safely recorded. Stay tuned for the final stage reveal!
+      </p>
+      <a href="index.html" class="btn btn-primary">Return to Hub</a>
+    </div>
+
+    <!-- Main Leaderboard View -->
+    <div id="leaderboardView">
+      <!-- Top 3 Podium Highlights -->
+      <section id="podiumSection" class="podium-container">
+        <!-- Rank 2 -->
+        <div class="podium-card rank-2" id="podiumRank2">
+          <div class="podium-badge">🥈</div>
+          <div class="podium-team" id="p2Team">STAND BY</div>
+          <div class="podium-students" id="p2Students">--</div>
+          <div class="podium-score" id="p2Score">0</div>
+          <div class="podium-stats" id="p2Stats">Accuracy: --% | Kills: --</div>
+        </div>
+
+        <!-- Rank 1 (Champion) -->
+        <div class="podium-card rank-1" id="podiumRank1">
+          <div class="podium-badge">👑</div>
+          <div style="font-size: 0.8rem; font-weight: 800; color: var(--accent-yellow); letter-spacing: 2px; text-transform: uppercase;">TOURNAMENT LEADER</div>
+          <div class="podium-team" id="p1Team">STAND BY</div>
+          <div class="podium-students" id="p1Students">--</div>
+          <div class="podium-score" id="p1Score">0</div>
+          <div class="podium-stats" id="p1Stats">Accuracy: --% | Kills: --</div>
+        </div>
+
+        <!-- Rank 3 -->
+        <div class="podium-card rank-3" id="podiumRank3">
+          <div class="podium-badge">🥉</div>
+          <div class="podium-team" id="p3Team">STAND BY</div>
+          <div class="podium-students" id="p3Students">--</div>
+          <div class="podium-score" id="p3Score">0</div>
+          <div class="podium-stats" id="p3Stats">Accuracy: --% | Kills: --</div>
+        </div>
+      </section>
+
+      <!-- Full Standings Table -->
+      <div class="cyber-table-wrapper">
+        <table class="cyber-table" id="leaderboardTable">
+          <thead>
+            <tr>
+              <th style="width: 70px; text-align: center;">Rank</th>
+              <th>Team Name</th>
+              <th>Student Participants</th>
+              <th>College / Institute</th>
+              <th style="text-align: right;">Final Score</th>
+              <th style="text-align: center;">Levels Beat</th>
+              <th style="text-align: center;">Hostiles Down</th>
+              <th style="text-align: center;">Accuracy</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody">
+            <tr>
+              <td colspan="8" class="text-center" style="padding: 3rem; color: var(--text-dim);">
+                Fetching official scores from tournament server...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer class="cyber-footer">
+    <p>© 2026 College Symposium Robotics Committee. Live tie-breaking algorithm verified by tournament server.</p>
+  </footer>
+
+  <script src="js/leaderboard.js"></script>
+</body>
+</html>

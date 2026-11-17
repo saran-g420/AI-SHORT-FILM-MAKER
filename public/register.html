@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Registration | CYBERSTRIKE 2026</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .reg-wrapper {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .student-card {
+      background: rgba(6, 12, 28, 0.6);
+      border: 1px solid rgba(0, 247, 255, 0.2);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+    .student-card h3 {
+      font-size: 1rem;
+      color: var(--primary-cyan);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .code-display-card {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px dashed var(--primary-cyan);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .code-box {
+      font-family: var(--font-mono);
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: var(--accent-yellow);
+      text-shadow: 0 0 15px rgba(255, 230, 0, 0.5);
+      margin: 0.8rem 0;
+      user-select: all;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="cyber-nav">
+    <a href="index.html" class="nav-brand">
+      <span class="brand-icon">🤖</span>
+      <div>
+        <div class="brand-title">CYBERSTRIKE 2026</div>
+        <div class="brand-subtitle">TEAM REGISTRATION PORTAL</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="register.html" class="nav-link active">Team Registration</a>
+      <a href="login.html" class="nav-link">Arena Login</a>
+      <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+      <a href="admin.html" class="nav-btn">Admin Portal 🛡️</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="reg-wrapper">
+      <div class="cyber-card">
+        <h2 class="section-title">📝 Student Team Registration</h2>
+        <p class="section-subtitle">
+          Register your two-member team for the college symposium robot shooting competition. Each team receives a secure, unique login code.
+        </p>
+
+        <div id="errorAlert" class="alert alert-danger hidden"></div>
+
+        <form id="registrationForm">
+          <!-- Team Name -->
+          <div class="form-group">
+            <label class="form-label" for="teamName">Team Call-Sign / Name *</label>
+            <input type="text" id="teamName" class="form-input" placeholder="e.g. CyberVanguard, NeuralKnights" required minlength="2" maxlength="40">
+            <div class="form-help">Unique name to identify your team on the public leaderboard.</div>
+          </div>
+
+          <div class="form-grid-2">
+            <!-- Student 1 -->
+            <div class="student-card">
+              <h3><span>👤</span> Student 1 Details (Captain)</h3>
+              <div class="form-group">
+                <label class="form-label" for="s1Name">Student 1 Full Name *</label>
+                <input type="text" id="s1Name" class="form-input" placeholder="First & Last Name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="s1College">Student 1 College / Institute *</label>
+                <input type="text" id="s1College" class="form-input" placeholder="College Name" required>
+              </div>
+            </div>
+
+            <!-- Student 2 -->
+            <div class="student-card">
+              <h3><span>👤</span> Student 2 Details</h3>
+              <div class="form-group">
+                <label class="form-label" for="s2Name">Student 2 Full Name *</label>
+                <input type="text" id="s2Name" class="form-input" placeholder="First & Last Name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="s2College">Student 2 College / Institute *</label>
+                <input type="text" id="s2College" class="form-input" placeholder="College Name" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Details -->
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="contactEmail">Contact Email (Optional)</label>
+              <input type="email" id="contactEmail" class="form-input" placeholder="contact@example.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contactPhone">Contact Mobile / WhatsApp (Optional)</label>
+              <input type="tel" id="contactPhone" class="form-input" placeholder="+91 9876543210">
+            </div>
+          </div>
+
+          <div class="mt-2 text-right">
+            <button type="submit" id="submitBtn" class="btn btn-primary">
+              Generate Team Code & Register 🚀
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal (Displays Unique Registration Code) -->
+  <div id="successModal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">🎉 Registration Successful!</h3>
+      </div>
+      <p style="color: var(--text-secondary); line-height: 1.5;">
+        Your team has been officially registered into the tournament database. Below is your <strong>Unique Team Login Code</strong>. Keep this safe; you will need it to access the game arena!
+      </p>
+
+      <div class="code-display-card">
+        <div style="font-size: 0.8rem; color: var(--primary-cyan); text-transform: uppercase; letter-spacing: 1.5px;">YOUR UNIQUE TEAM CODE</div>
+        <div class="code-box" id="modalCodeDisplay">ROBO-XXXXXX</div>
+        <button type="button" id="copyCodeBtn" class="btn btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.8rem;">
+          📋 Copy Code to Clipboard
+        </button>
+      </div>
+
+      <div style="background: rgba(0, 247, 255, 0.05); padding: 1rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 1.5rem;">
+        <div><strong>Team:</strong> <span id="modalTeamName"></span></div>
+        <div><strong>Members:</strong> <span id="modalStudents"></span></div>
+      </div>
+
+      <div class="flex-between">
+        <a href="register.html" class="btn btn-secondary">Register Another Team</a>
+        <a href="#" id="proceedToArenaBtn" class="btn btn-primary">Proceed to Arena Login 🎮</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="cyber-footer">
+    <p>© 2026 College Symposium Robotics Committee. All student registrations stored securely in SQLite.</p>
+  </footer>
+
+  <script src="js/register.js"></script>
+</body>
+</html>

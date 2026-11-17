@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arena Login | CYBERSTRIKE 2026</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .login-container {
+      max-width: 520px;
+      margin: 2rem auto;
+    }
+    .code-input-box {
+      font-family: var(--font-mono);
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      text-align: center;
+      color: var(--accent-yellow);
+      background: rgba(4, 9, 22, 0.9);
+      border: 2px solid var(--primary-cyan);
+      box-shadow: 0 0 15px rgba(0, 247, 255, 0.25);
+    }
+    .team-badge-preview {
+      background: rgba(0, 247, 255, 0.05);
+      border: 1px solid rgba(0, 247, 255, 0.3);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.5rem 0;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .preview-team-name {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--primary-cyan);
+      margin-bottom: 0.3rem;
+    }
+    .preview-students {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+    .status-pill {
+      display: inline-block;
+      margin-top: 0.6rem;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="cyber-nav">
+    <a href="index.html" class="nav-brand">
+      <span class="brand-icon">🤖</span>
+      <div>
+        <div class="brand-title">CYBERSTRIKE 2026</div>
+        <div class="brand-subtitle">TEAM COMBAT ACCESS</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="register.html" class="nav-link">Team Registration</a>
+      <a href="login.html" class="nav-link active">Arena Login</a>
+      <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+      <a href="admin.html" class="nav-btn">Admin Portal 🛡️</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="login-container">
+      <div class="cyber-card">
+        <div class="text-center" style="margin-bottom: 1.5rem;">
+          <div style="font-size: 3rem; margin-bottom: 0.5rem;">🕹️</div>
+          <h2 class="section-title" style="justify-content: center;">Arena Access</h2>
+          <p class="section-subtitle" style="margin-bottom: 0;">
+            Enter your unique 6-character team registration code to verify authorization and enter the tournament arena.
+          </p>
+        </div>
+
+        <div id="errorAlert" class="alert alert-danger hidden"></div>
+        <div id="infoAlert" class="alert alert-info hidden"></div>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label class="form-label text-center" for="teamCodeInput">Team Code (e.g. ROBO-XXXXXX)</label>
+            <input type="text" id="teamCodeInput" class="form-input code-input-box" placeholder="ROBO-XXXXXX" required maxlength="12" autofocus autocomplete="off">
+            <div class="form-help text-center">Codes are generated upon team registration.</div>
+          </div>
+
+          <button type="submit" id="verifyBtn" class="btn btn-primary" style="width: 100%;">
+            Verify Code & Briefing 🔓
+          </button>
+        </form>
+
+        <!-- Verified Team Preview & Pre-Flight Card -->
+        <div id="teamPreviewCard" class="team-badge-preview hidden">
+          <div class="preview-team-name" id="prevTeamName">CYBER-KNIGHTS</div>
+          <div class="preview-students" id="prevStudents">Student 1 & Student 2 (Institute of Technology)</div>
+          <div id="sessionStatusPill" class="status-pill badge-green">STATUS: READY TO COMMENCE RUN</div>
+
+          <div style="margin-top: 1.2rem; display: flex; gap: 0.8rem;">
+            <button id="launchGameBtn" class="btn btn-primary" style="flex: 1;">
+              Start Game Session (5 Mins) 🚀
+            </button>
+            <a href="leaderboard.html" id="viewLeaderboardBtn" class="btn btn-secondary hidden">
+              View Leaderboard 🏆
+            </a>
+          </div>
+        </div>
+
+        <div class="mt-2 text-center" style="font-size: 0.85rem; color: var(--text-dim);">
+          Haven't registered your team yet? <a href="register.html" style="color: var(--primary-cyan); font-weight: 600;">Register Here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="cyber-footer">
+    <p>© 2026 College Symposium Robotics Committee. Each team is authorized for one official tournament session.</p>
+  </footer>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

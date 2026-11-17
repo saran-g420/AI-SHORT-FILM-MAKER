@@ -1,0 +1,269 @@
+/* FRAME AI - Premium Cinematic Design System */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg-deep: #090C10;
+  --bg-surface: #0E131B;
+  --bg-card: #151C28;
+  --bg-card-hover: #1C2536;
+  --border-subtle: #232D40;
+  --border-focus: #F59E0B;
+  --gold-primary: #F59E0B;
+  --gold-hover: #D97706;
+  --gold-glow: rgba(245, 158, 11, 0.2);
+  --gold-subtle: rgba(245, 158, 11, 0.1);
+  --text-main: #F1F5F9;
+  --text-muted: #94A3B8;
+  --text-dim: #64748B;
+  --accent-cyan: #06B6D4;
+  --accent-crimson: #EF4444;
+  --accent-emerald: #10B981;
+  --screenplay-font: 'Courier Prime', 'JetBrains Mono', monospace;
+  --heading-font: 'Cinzel', serif;
+  --ui-font: 'Inter', -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--ui-font);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0B0E14;
+}
+::-webkit-scrollbar-thumb {
+  background: #232D40;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #F59E0B;
+}
+
+/* Typography Classes */
+.font-cinematic {
+  font-family: var(--heading-font);
+  letter-spacing: 0.08em;
+}
+
+.font-screenplay {
+  font-family: var(--screenplay-font);
+}
+
+.text-gold {
+  color: var(--gold-primary);
+}
+
+.bg-gold {
+  background-color: var(--gold-primary);
+}
+
+.border-gold {
+  border-color: var(--gold-primary);
+}
+
+/* Cinematic Cards & Glowing Borders */
+.film-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.film-card:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 15px var(--gold-glow);
+}
+
+.film-card-active {
+  border-color: var(--gold-primary) !important;
+  box-shadow: 0 0 25px var(--gold-glow) !important;
+}
+
+/* Screenplay Paper Simulation */
+.screenplay-sheet {
+  background-color: #0E1219;
+  border: 1px solid #283347;
+  color: #E2E8F0;
+  font-family: var(--screenplay-font);
+  line-height: 1.6;
+  border-radius: 8px;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.screenplay-slugline {
+  color: #F8FAFC;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #1E293B;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+}
+
+.screenplay-character {
+  text-align: center;
+  font-weight: 700;
+  color: var(--gold-primary);
+  text-transform: uppercase;
+  margin-top: 14px;
+  margin-bottom: 2px;
+  letter-spacing: 0.05em;
+}
+
+.screenplay-parenthetical {
+  text-align: center;
+  font-style: italic;
+  color: #94A3B8;
+  font-size: 0.9em;
+  margin-bottom: 2px;
+}
+
+.screenplay-dialogue {
+  max-width: 78%;
+  margin: 0 auto 14px auto;
+  text-align: left;
+  color: #F1F5F9;
+  font-size: 1.02em;
+}
+
+.screenplay-action {
+  color: #94A3B8;
+  font-style: normal;
+  margin: 10px 0;
+  padding-left: 8px;
+  border-left: 2px solid #334155;
+  font-size: 0.95em;
+}
+
+/* Buttons */
+.btn-gold {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: #0B0E14;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(245, 158, 11, 0.5);
+}
+
+.btn-subtle {
+  background-color: #1A2332;
+  color: #E2E8F0;
+  border: 1px solid #2B384E;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-subtle:hover {
+  background-color: #243046;
+  border-color: #3E4F6D;
+  color: #FFFFFF;
+}
+
+/* Cinematic Badges */
+.badge-reverse {
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.15), rgba(245, 158, 11, 0.15));
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: #FBBF24;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-lens {
+  background-color: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  color: #22D3EE;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* 180-Degree Line Alert */
+.axis-line {
+  stroke-dasharray: 6, 6;
+  animation: axisPulse 2s infinite linear;
+}
+
+@keyframes axisPulse {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+
+/* Viewfinder Simulation */
+.viewfinder-frame {
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: radial-gradient(circle, rgba(14, 19, 27, 0.6) 0%, rgba(9, 12, 16, 0.95) 100%);
+  overflow: hidden;
+}
+
+.crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Mic pulsating recording animation */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.recording-pulse {
+  animation: pulseGlow 1.5s infinite;
+}
+
+/* Print styles for Screenplay Export */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .screenplay-sheet {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .screenplay-character {
+    color: #000000 !important;
+  }
+  .screenplay-dialogue {
+    color: #000000 !important;
+  }
+}

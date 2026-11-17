@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FRAME AI – AI Film Director, Scriptwriter & Cinematographer</title>
+  <meta name="description" content="FRAME AI: Imagine It. Write It. Shoot It. Professional AI-powered filmmaking platform for screenwriters, directors, and cinematographers.">
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            film: {
+              black: '#090C10',
+              surface: '#0E131B',
+              card: '#151C28',
+              cardHover: '#1C2536',
+              border: '#232D40',
+              gold: '#F59E0B',
+              goldHover: '#D97706',
+              cyan: '#06B6D4'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Custom CSS -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-film-black text-slate-100 min-h-screen flex flex-col font-sans">
+
+  <!-- ============================================================ -->
+  <!-- TOP NAVIGATION HEADER -->
+  <!-- ============================================================ -->
+  <header class="sticky top-0 z-40 bg-film-surface/95 backdrop-blur-md border-b border-film-border px-4 lg:px-8 py-3">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      
+      <!-- Brand Logo & Tagline -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="App.switchView('landing')">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20 text-film-black font-extrabold text-xl">
+          🎬
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl font-black tracking-wider text-white font-cinematic">FRAME AI</span>
+            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40">PRO 2.0</span>
+          </div>
+          <p class="text-[10px] text-amber-400/90 font-medium tracking-widest uppercase">Imagine It. Write It. Shoot It.</p>
+        </div>
+      </div>
+
+      <!-- Main Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-1 text-xs font-semibold">
+        <button onclick="App.switchView('landing')" data-view="landing" class="nav-link px-3 py-2 rounded text-amber-400 border-b-2 border-amber-400 transition">
+          Home
+        </button>
+        <button onclick="App.switchView('dashboard')" data-view="dashboard" class="nav-link px-3 py-2 rounded text-slate-300 hover:text-white transition">
+          Dashboard
+        </button>
+        <button onclick="App.switchView('create')" data-view="create" class="nav-link px-3 py-2 rounded text-slate-300 hover:text-white transition flex items-center gap-1">
+          <span class="text-amber-400">✨</span> Create Scene
+        </button>
+        <button onclick="App.switchView('results')" data-view="results" class="nav-link px-3 py-2 rounded text-slate-300 hover:text-white transition flex items-center gap-1">
+          <span>Master Studio</span>
+        </button>
+        <button onclick="App.switchView('projects')" data-view="projects" class="nav-link px-3 py-2 rounded text-slate-300 hover:text-white transition">
+          My Projects
+        </button>
+        <button onclick="App.switchView('learning')" data-view="learning" class="nav-link px-3 py-2 rounded text-slate-300 hover:text-white transition">
+          Filmmaking Guide
+        </button>
+        <button onclick="App.switchView('admin')" data-view="admin" class="nav-link px-3 py-2 rounded text-slate-300 hover:text-white transition">
+          Admin
+        </button>
+      </nav>
+
+      <!-- Right Header Actions (Settings & CTA) -->
+      <div class="flex items-center gap-2.5">
+        <!-- Settings Button -->
+        <button onclick="SettingsManager.openSettingsModal()" class="p-2 rounded-lg bg-film-card hover:bg-film-cardHover border border-film-border text-slate-300 hover:text-amber-400 transition" title="API Keys & Settings">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+        </button>
+
+        <!-- Demo Login / Profile -->
+        <button onclick="App.quickDemoLogin()" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-film-card hover:bg-film-cardHover border border-film-border text-xs text-slate-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span id="user-profile-name">Alex Rivera</span>
+        </button>
+
+        <!-- New Scene Primary CTA -->
+        <button onclick="App.switchView('create')" class="btn-gold px-3.5 py-1.5 text-xs font-bold flex items-center gap-1.5">
+          <span>+ New Scene</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- MAIN CONTENT CONTAINER -->
+  <!-- ============================================================ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8">
+
+    <!-- ========================================================== -->
+    <!-- VIEW 1: LANDING PAGE -->
+    <!-- ========================================================== -->
+    <div id="view-landing" class="space-y-12">
+      <!-- Hero Section -->
+      <section class="text-center py-12 px-4 relative overflow-hidden">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider mb-6">
+          <span>🎬 The Complete AI Filmmaking Suite</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-black text-white font-cinematic tracking-tight max-w-4xl mx-auto leading-tight">
+          Imagine It. Write It. <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500">Shoot It.</span>
+        </h1>
+        <p class="mt-4 text-base md:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+          Upgrade your story ideas into character-by-character screenplays, three alternative script versions, dialogue-correlated camera angles, reverse-shot blocking plans, and director guidance.
+        </p>
+        
+        <div class="mt-8 flex items-center justify-center gap-4 flex-wrap">
+          <button onclick="App.switchView('create')" class="btn-gold px-6 py-3 text-sm font-bold flex items-center gap-2 text-film-black">
+            <span>Start Directing with AI</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+          <button onclick="App.switchView('results')" class="btn-subtle px-6 py-3 text-sm font-semibold flex items-center gap-2">
+            <span>Explore Active Scene Demo</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Key Capabilities Matrix -->
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="film-card p-6 border-t-2 border-t-amber-500">
+          <div class="w-10 h-10 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg mb-4 font-bold">
+            ✍️
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2 font-cinematic">AI Scriptwriter</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Generates three distinct script variations: <strong>Natural Grounded</strong>, <strong>Cinematic Dramatic</strong>, and <strong>Creative Twist</strong> with character-wise dialogue lines, emotions, actions, and individual copy buttons.
+          </p>
+        </div>
+
+        <div class="film-card p-6 border-t-2 border-t-cyan-500">
+          <div class="w-10 h-10 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg mb-4 font-bold">
+            🎥
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2 font-cinematic">AI Cinematographer</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Connects camera angles directly to dialogues. When Character 1 speaks, it frames them; when Character 2 responds, it maps the exact reciprocal reverse shot maintaining the 180° line.
+          </p>
+        </div>
+
+        <div class="film-card p-6 border-t-2 border-t-purple-500">
+          <div class="w-10 h-10 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg mb-4 font-bold">
+            🎬
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2 font-cinematic">AI Director Mode</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Actor blocking, staging, vocal coaching, 3-point lighting setups, foley sound cue sheets, and an interactive 2D top-down director blocking stage with viewfinder simulation.
+          </p>
+        </div>
+      </section>
+
+      <!-- Showcase Demo Callout (Arun & Kumar) -->
+      <section class="film-card p-8 bg-gradient-to-r from-film-card via-slate-900 to-film-card border-amber-500/40">
+        <div class="flex items-center justify-between gap-6 flex-wrap">
+          <div class="max-w-2xl">
+            <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest px-2.5 py-1 rounded bg-amber-500/15 border border-amber-500/30">
+              Interactive Showcase Scene Loaded
+            </span>
+            <h2 class="text-2xl font-bold text-white font-cinematic mt-3 mb-2">The Reunion: Arun & Kumar</h2>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              "Two friends meet after many years. One friend asks where he has been, and the other explains that he went abroad."
+              See how FRAME AI transformed this 1-line idea into 3 complete scripts, 6 camera angles with reverse shots, 3-point lighting, and a director's binder.
+            </p>
+          </div>
+          <button onclick="App.switchView('results')" class="btn-gold px-5 py-2.5 text-xs font-bold text-film-black">
+            View Complete Generated Scene →
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- VIEW 2: USER DASHBOARD -->
+    <!-- ========================================================== -->
+    <div id="view-dashboard" class="hidden space-y-8">
+      <div class="flex items-center justify-between gap-4 flex-wrap pb-4 border-b border-film-border">
+        <div>
+          <h2 class="text-2xl font-bold text-white font-cinematic">Filmmaker Dashboard</h2>
+          <p class="text-xs text-slate-400 mt-1">Manage your film projects, recent scenes, and creative workflow.</p>
+        </div>
+        <button onclick="App.switchView('create')" class="btn-gold px-4 py-2 text-xs font-bold">
+          + Create New Scene
+        </button>
+      </div>
+
+      <!-- Quick Metrics -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="film-card p-5">
+          <span class="text-xs text-slate-400 uppercase font-semibold">Current Scene</span>
+          <h3 class="text-base font-bold text-white mt-1">The Reunion: Arun & Kumar</h3>
+          <span class="text-xs text-amber-400 mt-2 block">3 Script Variations Active</span>
+        </div>
+        <div class="film-card p-5">
+          <span class="text-xs text-slate-400 uppercase font-semibold">Shot Coverage</span>
+          <h3 class="text-base font-bold text-cyan-400 mt-1">6 Shots Planned</h3>
+          <span class="text-xs text-slate-400 mt-2 block">Includes Reciprocal Reverse Shots</span>
+        </div>
+        <div class="film-card p-5">
+          <span class="text-xs text-slate-400 uppercase font-semibold">Director Improvements</span>
+          <h3 class="text-base font-bold text-emerald-400 mt-1">3 Suggestions Ready</h3>
+          <span class="text-xs text-slate-400 mt-2 block">What • Why • How • Examples</span>
+        </div>
+      </div>
+
+      <!-- Recent Projects Box -->
+      <div class="film-card p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-bold text-white uppercase font-cinematic">Recent Film Projects</h3>
+          <button onclick="App.switchView('projects')" class="text-xs text-amber-400 hover:underline">View All →</button>
+        </div>
+        <div id="dashboard-recent-projects" class="space-y-3">
+          <!-- Populated by projects.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- VIEW 3: CREATE NEW SCENE WIZARD -->
+    <!-- ========================================================== -->
+    <div id="view-create" class="hidden space-y-8 max-w-4xl mx-auto">
+      <div class="text-center">
+        <h2 class="text-3xl font-black text-white font-cinematic">Direct Your Next Scene</h2>
+        <p class="text-xs text-slate-300 mt-2 max-w-xl mx-auto">
+          Enter a story idea, conversation snippet, or scene concept. Dictate with your voice or type naturally. FRAME AI will generate 3 full script versions and camera plans.
+        </p>
+      </div>
+
+      <!-- Main Input Film Card -->
+      <div class="film-card p-6 space-y-6 border-t-4 border-t-amber-500">
+        
+        <!-- Story / Conversation Textarea with Mic Button -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-xs font-bold uppercase text-amber-400 tracking-wider flex items-center gap-2">
+              <span>Story Idea / Scene Description / Conversation</span>
+            </label>
+            <!-- Voice Dictation Button (Web Speech API) -->
+            <button id="mic-button" onclick="GeneratorManager.toggleVoiceInput()" class="btn-subtle px-3 py-1 text-xs flex items-center gap-1.5" title="Click to speak your scene idea">
+              <span>🎙️</span>
+              <span>Voice Dictate</span>
+            </button>
+          </div>
+
+          <textarea id="scene-prompt-input" rows="4" placeholder="e.g. Two friends meet after many years. One friend asks where he has been, and the other explains that he went abroad." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3.5 text-sm text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none transition leading-relaxed"></textarea>
+
+          <!-- Quick Preset Chips -->
+          <div class="mt-2.5 flex items-center gap-2 flex-wrap text-[11px]">
+            <span class="text-slate-400 font-semibold">Try presets:</span>
+            <button onclick="GeneratorManager.setPresetPrompt('Two friends meet after many years. One friend asks where he has been, and the other explains that he went abroad.', 'Drama', 'Tense & Nostalgic')" class="px-2.5 py-1 rounded bg-slate-800 text-amber-300 border border-slate-700 hover:bg-slate-700">
+              ☕ Arun & Kumar Cafe Reunion
+            </button>
+            <button onclick="GeneratorManager.setPresetPrompt('A detective confronts their former partner at a rainy dockside about missing evidence from an old case.', 'Crime / Noir', 'Tense & Grounded')" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">
+              🌧️ Noir Dockside Confrontation
+            </button>
+            <button onclick="GeneratorManager.setPresetPrompt('An isolated radio operator deep in an arctic outpost receives a distress code from an uncharted frequency.', 'Sci-Fi / Thriller', 'Claustrophobic')" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">
+              📡 Arctic Radio Transmission
+            </button>
+          </div>
+        </div>
+
+        <!-- 6 Granular Filmmaker Controls (Section 12 Requirements) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-4 border-t border-slate-800 text-xs">
+          <!-- 1. Genre -->
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1 uppercase tracking-wider text-[10px]">Genre</label>
+            <select id="genre-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:border-amber-500">
+              <option value="Drama" selected>Drama</option>
+              <option value="Thriller">Thriller</option>
+              <option value="Sci-Fi">Sci-Fi</option>
+              <option value="Crime / Noir">Crime / Film Noir</option>
+              <option value="Romance">Romance</option>
+              <option value="Comedy">Comedy</option>
+              <option value="Action">Action</option>
+              <option value="Horror / Mystery">Horror / Mystery</option>
+              <option value="Indie Cinema">Indie Cinema</option>
+            </select>
+          </div>
+
+          <!-- 2. Mood -->
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1 uppercase tracking-wider text-[10px]">Atmospheric Mood</label>
+            <select id="mood-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:border-amber-500">
+              <option value="Tense & Nostalgic" selected>Tense & Nostalgic</option>
+              <option value="Melancholic & Reflective">Melancholic & Reflective</option>
+              <option value="High Stakes Suspense">High Stakes Suspense</option>
+              <option value="Uplifting & Emotional">Uplifting & Emotional</option>
+              <option value="Claustrophobic & Dark">Claustrophobic & Dark</option>
+              <option value="Humorous & Quick-Witted">Humorous & Quick-Witted</option>
+            </select>
+          </div>
+
+          <!-- 3. Character Count -->
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1 uppercase tracking-wider text-[10px]">Number of Characters</label>
+            <select id="characters-count-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:border-amber-500">
+              <option value="2" selected>2 Characters (Intimate Dialogue)</option>
+              <option value="3">3 Characters (Triangular Dynamic)</option>
+              <option value="4">4 Characters (Group / Team)</option>
+              <option value="5">Ensemble Cast</option>
+            </select>
+          </div>
+
+          <!-- 4. Preferred Language -->
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1 uppercase tracking-wider text-[10px]">Language</label>
+            <select id="language-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:border-amber-500">
+              <option value="English" selected>English</option>
+              <option value="Spanish">Spanish</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Tamil">Tamil</option>
+              <option value="French">French</option>
+              <option value="German">German</option>
+              <option value="Japanese">Japanese</option>
+            </select>
+          </div>
+
+          <!-- 5. Script Length -->
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1 uppercase tracking-wider text-[10px]">Scene Length</label>
+            <select id="script-length-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:border-amber-500">
+              <option value="Short Scene (4-6 beats)">Short Scene (1 - 2 mins)</option>
+              <option value="Standard Scene (6-8 beats)" selected>Standard Scene (3 - 4 mins)</option>
+              <option value="Extended Sequence (8-12 beats)">Extended Sequence (5+ mins)</option>
+            </select>
+          </div>
+
+          <!-- 6. Experience Level -->
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1 uppercase tracking-wider text-[10px]">Experience Level</label>
+            <select id="experience-level-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:border-amber-500">
+              <option value="Beginner / Student">Beginner / Student</option>
+              <option value="Indie Filmmaker" selected>Indie Filmmaker</option>
+              <option value="Professional Cinematographer">Professional Cinematographer</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Reference Image Upload (Optional Mood Board) -->
+        <div class="pt-4 border-t border-slate-800 text-xs">
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400 font-semibold uppercase text-[10px]">Visual Reference / Mood Board (Optional)</span>
+            <input type="file" id="mood-image-input" accept="image/*" onchange="GeneratorManager.handleImageUpload(event)" class="text-xs text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-xs file:bg-slate-800 file:text-amber-300 hover:file:bg-slate-700">
+          </div>
+          <img id="image-mood-preview" src="" alt="Mood Reference" class="hidden mt-3 max-h-36 rounded-lg border border-slate-700 object-cover">
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-2">
+          <button onclick="GeneratorManager.generateScene()" class="w-full btn-gold py-3.5 text-sm font-bold flex items-center justify-center gap-2 text-film-black uppercase tracking-wider">
+            <span>🎬 Generate 3 Script Variations & Cinematography Plan</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- VIEW 4: MASTER STUDIO & RESULTS WORKSPACE -->
+    <!-- ========================================================== -->
+    <div id="view-results" class="hidden space-y-6">
+
+      <!-- Scene Header Slugline & Concept Card (Section 10 #1, #2, #3) -->
+      <div class="film-card p-6 bg-gradient-to-r from-slate-900 via-film-card to-slate-900 border-amber-500/40">
+        <div class="flex items-start justify-between gap-4 flex-wrap pb-4 mb-4 border-b border-slate-800">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest font-mono">SCENE SLUGLINE</span>
+            </div>
+            <h2 id="scene-active-heading" class="text-2xl font-black text-white font-screenplay uppercase tracking-wide">
+              INT. CORNER CAFE - RAINY AFTERNOON
+            </h2>
+          </div>
+
+          <!-- Quick Action Bar -->
+          <div class="flex items-center gap-2">
+            <button onclick="ProjectsManager.openExportModal()" class="btn-subtle px-3 py-1.5 text-xs text-amber-300 hover:text-white flex items-center gap-1.5 font-semibold">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              <span>Export Screenplay & Shots</span>
+            </button>
+            <button onclick="App.switchView('create')" class="btn-gold px-3.5 py-1.5 text-xs font-bold flex items-center gap-1 text-film-black">
+              <span>+ New Scene</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Original Idea vs Improved Concept Display -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="bg-black/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Original User Idea:</span>
+            <p id="scene-original-idea-display" class="text-slate-300 italic leading-relaxed">
+              "Two friends meet after many years. One friend asks where he has been, and the other explains that he went abroad."
+            </p>
+          </div>
+          <div class="bg-black/40 p-3 rounded-lg border border-amber-500/30">
+            <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-1">AI Improved Scene Concept:</span>
+            <p id="scene-improved-concept-display" class="text-slate-200 leading-relaxed">
+              Arun sits alone nursing cold coffee. The brass bells above the door chime as Kumar steps in—drenched, wearing an expensive tailored coat that clashes with their modest past.
+            </p>
+          </div>
+        </div>
+
+        <!-- Character Slug Bar -->
+        <div id="scene-characters-bar" class="mt-4 pt-3 border-t border-slate-800/80">
+          <!-- Populated by screenplay.js -->
+        </div>
+      </div>
+
+      <!-- Navigation Tabs for the 8 Deep Filmmaking Modules (Section 10) -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-film-border text-xs font-semibold select-none">
+        <button id="tab-btn-variations" onclick="App.switchResultsTab('variations')" class="px-4 py-2 rounded-lg bg-amber-500 text-black font-bold whitespace-nowrap transition">
+          🎭 3 Script Variations
+        </button>
+        <button id="tab-btn-cinematography" onclick="App.switchResultsTab('cinematography')" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white whitespace-nowrap transition">
+          🎥 Shot-by-Shot Plan
+        </button>
+        <button id="tab-btn-visualizer" onclick="App.switchResultsTab('visualizer')" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white whitespace-nowrap transition">
+          📐 2D Blocking & Viewfinder
+        </button>
+        <button id="tab-btn-director" onclick="App.switchResultsTab('director')" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white whitespace-nowrap transition">
+          🎬 AI Director Mode
+        </button>
+        <button id="tab-btn-improvements" onclick="App.switchResultsTab('improvements')" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white whitespace-nowrap transition">
+          💡 AI Improvements
+        </button>
+        <button id="tab-btn-creative" onclick="App.switchResultsTab('creative')" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white whitespace-nowrap transition">
+          ✨ Creative Story Ideas
+        </button>
+        <button id="tab-btn-storyboard" onclick="App.switchResultsTab('storyboard')" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white whitespace-nowrap transition">
+          🖼️ Storyboard
+        </button>
+        <button id="tab-btn-doubts" onclick="App.switchResultsTab('doubts')" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white whitespace-nowrap transition">
+          ❓ Ask AI Director (Doubts)
+        </button>
+      </div>
+
+      <!-- TAB 1: THREE SCRIPT VARIATIONS (Section 3 Requirement) -->
+      <div id="tab-content-variations" class="space-y-6">
+        <div class="flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <h3 class="text-lg font-bold text-white font-cinematic">Three Distinct Script Variations</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Each variation has independent Copy, Edit, Regenerate, Improve, and Expand actions.</p>
+          </div>
+          <div class="text-xs text-amber-400 font-mono bg-amber-500/10 px-3 py-1 rounded border border-amber-500/30">
+            ✓ Individual Copy Enabled (Scripts will never be mixed together)
+          </div>
+        </div>
+
+        <div id="script-variations-container" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Populated by screenplay.js -->
+        </div>
+      </div>
+
+      <!-- TAB 2: SHOT-BY-SHOT CINEMATOGRAPHY (Section 6 Requirement) -->
+      <div id="tab-content-cinematography" class="hidden space-y-6">
+        <div class="flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <h3 class="text-lg font-bold text-white font-cinematic">Shot-by-Shot Cinematography Plan</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Every dialogue line is mapped to camera angles, lens focal lengths, and reverse shots.</p>
+          </div>
+        </div>
+
+        <div id="shot-list-container">
+          <!-- Populated by cinematography.js -->
+        </div>
+      </div>
+
+      <!-- TAB 3: 2D TOP-DOWN BLOCKING & VIEWFINDER (Section 8 Requirement) -->
+      <div id="tab-content-visualizer" class="hidden space-y-6">
+        <div class="flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <h3 class="text-lg font-bold text-white font-cinematic">Camera Blocking Studio & Viewfinder</h3>
+            <p class="text-xs text-slate-400 mt-0.5">2D Top-down spatial map showing Actor A, Actor B, 180° line of action, and camera view frustums.</p>
+          </div>
+
+          <!-- Aspect Ratio and Overlay Toggles -->
+          <div class="flex items-center gap-2 text-xs">
+            <span class="text-slate-400 font-mono">Aspect:</span>
+            <button onclick="Visualizer.setAspectRatio('2.39:1')" class="px-2.5 py-1 rounded bg-slate-800 text-amber-400 border border-slate-700">2.39:1</button>
+            <button onclick="Visualizer.setAspectRatio('16:9')" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700">16:9</button>
+            <button onclick="Visualizer.setAspectRatio('9:16')" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700">9:16 Reel</button>
+            <button onclick="Visualizer.toggleGrid()" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700">Grid #</button>
+            <button onclick="Visualizer.toggleSafeAreas()" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700">Safe Areas</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- 2D SVG Stage Canvas -->
+          <div class="film-card p-4">
+            <div class="flex items-center justify-between text-xs font-bold text-slate-300 uppercase mb-3 pb-2 border-b border-slate-800">
+              <span class="flex items-center gap-1.5"><span class="text-amber-400">📐</span> 2D Top-Down Director Blocking Stage</span>
+              <span class="text-[10px] text-red-400 font-mono">180° AXIS LOCKED</span>
+            </div>
+            <div id="blocking-studio-canvas" class="w-full h-80 rounded-lg overflow-hidden border border-slate-800 bg-black">
+              <!-- SVG injected by visualizer.js -->
+            </div>
+            <p class="text-[11px] text-slate-400 mt-3 leading-relaxed">
+              Camera is strictly positioned on the safe side of the 180° line between Actor 1 (Arun) and Actor 2 (Kumar). Click any shot in the shot list to adjust the camera position!
+            </p>
+          </div>
+
+          <!-- Viewfinder Simulation -->
+          <div class="film-card p-4 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between text-xs font-bold text-slate-300 uppercase mb-3 pb-2 border-b border-slate-800">
+                <span class="flex items-center gap-1.5"><span class="text-cyan-400">👁️</span> Director's Viewfinder Simulation</span>
+                <span class="text-[10px] text-amber-400 font-mono">24 FPS • 3200K</span>
+              </div>
+              <div id="viewfinder-simulation">
+                <!-- Injected by visualizer.js -->
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+              <span>Rule of Thirds Alignment Active</span>
+              <span class="text-amber-400">Anamorphic Bokeh Simulation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: AI DIRECTOR MODE (Section 7 Requirement) -->
+      <div id="tab-content-director" class="hidden space-y-6">
+        <div id="director-mode-container">
+          <!-- Populated by director.js -->
+        </div>
+      </div>
+
+      <!-- TAB 5: SCRIPT IMPROVEMENT CENTER (Section 4 Requirement) -->
+      <div id="tab-content-improvements" class="hidden space-y-6">
+        <div id="improvements-container">
+          <!-- Populated by improvements.js -->
+        </div>
+      </div>
+
+      <!-- TAB 6: CREATIVE STORY IDEAS (Section 5 Requirement) -->
+      <div id="tab-content-creative" class="hidden space-y-6">
+        <div id="creative-ideas-container">
+          <!-- Populated by creative.js -->
+        </div>
+      </div>
+
+      <!-- TAB 7: STORYBOARD BUILDER (Section 15 Requirement) -->
+      <div id="tab-content-storyboard" class="hidden space-y-6">
+        <div class="flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <h3 class="text-lg font-bold text-white font-cinematic">Storyboard Card Deck</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Visual representation of each shot sequence with framing composition.</p>
+          </div>
+          <button onclick="window.print()" class="btn-subtle px-3 py-1.5 text-xs text-amber-300">
+            Print Storyboards
+          </button>
+        </div>
+
+        <div id="storyboard-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Populated by storyboard.js -->
+        </div>
+      </div>
+
+      <!-- TAB 8: AI DOUBT CLEARING ASSISTANT (Section 9 Requirement) -->
+      <div id="tab-content-doubts" class="hidden space-y-6 max-w-4xl mx-auto">
+        <div class="film-card p-6">
+          <div class="pb-3 mb-4 border-b border-slate-800">
+            <h3 class="text-base font-bold text-white font-cinematic flex items-center gap-2">
+              <span class="text-amber-400">💬</span> AI Filmmaking Doubt Clearing Assistant
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Context-aware Q&A. Ask technical, artistic, or budget shooting questions directly about this scene.</p>
+          </div>
+
+          <!-- Quick Doubt Questions -->
+          <div class="flex items-center gap-2 flex-wrap mb-4 text-xs">
+            <span class="text-[11px] text-slate-400 font-semibold">Quick questions:</span>
+            <button onclick="DoubtAssistant.askPreset('How can I shoot this scene with a smartphone?')" class="px-2.5 py-1 rounded bg-slate-800 text-amber-300 border border-slate-700 hover:bg-slate-700">
+              📱 Shoot on Smartphone?
+            </button>
+            <button onclick="DoubtAssistant.askPreset('Why should I use an over-the-shoulder reverse shot here?')" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">
+              🔄 Why Reverse Shot?
+            </button>
+            <button onclick="DoubtAssistant.askPreset('How do I shoot this conversation with only one camera?')" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">
+              📹 Shoot with 1 Camera?
+            </button>
+            <button onclick="DoubtAssistant.askPreset('Which lens focal length is best for this dialogue?')" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">
+              🔍 Which Lens?
+            </button>
+          </div>
+
+          <!-- Chat Messages Box -->
+          <div id="doubt-chat-messages" class="h-96 overflow-y-auto p-4 rounded-lg bg-black/50 border border-slate-800 mb-4 space-y-3">
+            <!-- Messages rendered by doubtChat.js -->
+          </div>
+
+          <!-- Chat Input Bar -->
+          <div class="flex items-center gap-2">
+            <input type="text" id="doubt-input" onkeydown="DoubtAssistant.handleInputSubmit(event)" placeholder="Ask any directing, camera, lens, or blocking question..." class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-xs text-white focus:border-amber-500 focus:outline-none">
+            <button onclick="DoubtAssistant.askQuestion(document.getElementById('doubt-input').value); document.getElementById('doubt-input').value='';" class="btn-gold px-5 py-2.5 text-xs font-bold text-film-black">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- VIEW 5: MY PROJECTS -->
+    <!-- ========================================================== -->
+    <div id="view-projects" class="hidden space-y-6">
+      <div class="flex items-center justify-between gap-4 flex-wrap pb-4 border-b border-film-border">
+        <div>
+          <h2 class="text-2xl font-bold text-white font-cinematic">My Film Projects</h2>
+          <p class="text-xs text-slate-400 mt-1">Manage and reopen saved screenplays, shot lists, and directors binders.</p>
+        </div>
+        <button onclick="ProjectsManager.createNewProjectPrompt()" class="btn-gold px-4 py-2 text-xs font-bold text-film-black">
+          + Create New Project
+        </button>
+      </div>
+
+      <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Injected by projects.js -->
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- VIEW 6: LEARNING CENTER -->
+    <!-- ========================================================== -->
+    <div id="view-learning" class="hidden space-y-6">
+      <div class="pb-4 border-b border-film-border">
+        <h2 class="text-2xl font-bold text-white font-cinematic">Filmmaking Masterclass & Reference Guide</h2>
+        <p class="text-xs text-slate-400 mt-1">Deep visual guides for camera angles, the 180° rule, lens focal lengths, and 3-point lighting.</p>
+      </div>
+
+      <div id="learning-container">
+        <!-- Injected by learning.js -->
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- VIEW 7: ADMIN DASHBOARD -->
+    <!-- ========================================================== -->
+    <div id="view-admin" class="hidden space-y-6">
+      <div class="pb-4 border-b border-film-border">
+        <h2 class="text-2xl font-bold text-white font-cinematic">Executive Admin & System Analytics</h2>
+        <p class="text-xs text-slate-400 mt-1">Real-time metrics, AI model throughput, and platform infrastructure health.</p>
+      </div>
+
+      <div id="admin-container">
+        <!-- Injected by admin.js -->
+      </div>
+    </div>
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- MODALS & OVERLAYS -->
+  <!-- ============================================================ -->
+
+  <!-- 1. Screenplay & Character Dialogue Editor Modal -->
+  <div id="screenplay-editor-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="film-card max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border-amber-500/50">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <h3 class="text-base font-bold text-white font-cinematic flex items-center gap-2">
+          <span>✍️</span> Character Dialogue & Screenplay Editor
+        </h3>
+        <button onclick="ScreenplayManager.closeEditor()" class="text-slate-400 hover:text-white p-1">✕</button>
+      </div>
+      <div id="editor-modal-body" class="p-6 overflow-y-auto flex-1">
+        <!-- Injected by screenplay.js -->
+      </div>
+      <div class="p-4 border-t border-slate-800 flex items-center justify-end gap-3">
+        <button onclick="ScreenplayManager.closeEditor()" class="btn-subtle px-4 py-2 text-xs">Cancel</button>
+        <button onclick="ScreenplayManager.saveEditorChanges()" class="btn-gold px-5 py-2 text-xs font-bold text-film-black">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Export Screenplay Modal -->
+  <div id="export-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="film-card max-w-2xl w-full p-6 shadow-2xl border-amber-500/50">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-800">
+        <h3 class="text-base font-bold text-white font-cinematic">Export Screenplay & Cinematography Files</h3>
+        <button onclick="document.getElementById('export-modal').classList.add('hidden')" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+      <div id="export-modal-body">
+        <!-- Injected by projects.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Settings Modal -->
+  <div id="settings-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="film-card max-w-lg w-full p-6 shadow-2xl border-amber-500/50 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="text-base font-bold text-white font-cinematic">Platform Settings & API Keys</h3>
+        <button onclick="SettingsManager.closeSettingsModal()" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+      
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Google Gemini API Key (Optional)</label>
+          <input type="password" id="setting-gemini-key" placeholder="AIzaSy..." class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white font-mono focus:border-amber-500 focus:outline-none">
+          <p class="text-[11px] text-slate-500 mt-1">If blank, FRAME AI uses our built-in Autonomous Filmmaking Director Engine with zero downtime.</p>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Filmmaker Experience Profile</label>
+          <select id="setting-exp-level" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white">
+            <option value="Beginner / Student">Beginner / Film Student</option>
+            <option value="Indie Filmmaker">Independent Filmmaker</option>
+            <option value="Professional Cinematographer">Professional Cinematographer</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+        <button onclick="SettingsManager.closeSettingsModal()" class="btn-subtle px-4 py-2 text-xs">Cancel</button>
+        <button onclick="SettingsManager.saveSettings()" class="btn-gold px-4 py-2 text-xs font-bold text-film-black">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Generation Loading Overlay -->
+  <div id="generation-loading-overlay" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center p-6 hidden">
+    <div class="text-5xl animate-bounce mb-4">🎬</div>
+    <h3 class="text-2xl font-bold text-white font-cinematic uppercase tracking-widest text-center">
+      FRAME AI IS DIRECTING YOUR SCENE
+    </h3>
+    <p class="text-xs text-amber-400 mt-2 font-mono text-center">
+      Writing character conversations • Generating 3 script variations • Calculating 180° reverse camera angles...
+    </p>
+    <div class="w-64 h-1.5 bg-slate-800 rounded-full mt-6 overflow-hidden">
+      <div class="w-full h-full bg-gradient-to-r from-amber-500 via-amber-300 to-amber-600 animate-[pulse_1s_infinite]"></div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- FOOTER -->
+  <!-- ============================================================ -->
+  <footer class="bg-film-surface border-t border-film-border py-6 px-4 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-white font-cinematic">FRAME AI</span>
+        <span>— "Imagine It. Write It. Shoot It."</span>
+      </div>
+      <div>
+        <span>AI Film Director • Screenwriter • Cinematographer</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Scripts -->
+  <script src="/js/visualizer.js"></script>
+  <script src="/js/screenplay.js"></script>
+  <script src="/js/cinematography.js"></script>
+  <script src="/js/director.js"></script>
+  <script src="/js/improvements.js"></script>
+  <script src="/js/creative.js"></script>
+  <script src="/js/doubtChat.js"></script>
+  <script src="/js/storyboard.js"></script>
+  <script src="/js/projects.js"></script>
+  <script src="/js/learning.js"></script>
+  <script src="/js/admin.js"></script>
+  <script src="/js/settings.js"></script>
+  <script src="/js/generator.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
